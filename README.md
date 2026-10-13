@@ -1,11 +1,15 @@
-# cstack
+# cstack — Roger's fork
 
-These are the skills that I use almost every day. I am always adding more skills here. The skills here have saved me hours on on workflows. lmk your experiences with them and drop any feedback! These skills are also refined quite often.
+Personal fork of [goodnight000/cstack](https://github.com/goodnight000/cstack),
+with Roger's Resolve format, a color-grading workflow, and one maintained skill set
+shared by Claude Code and Codex. The upstream skills remain available below.
 
 ## Skills
 
 | Skill | What it does |
 | --- | --- |
+| [rojeru-format](skills/rojeru-format/SKILL.md) | Roger's 4:3 format: cleaned speech, yellow centered hook, two-second title pause, sentence captions, Inter/Helvetica, and B-roll cadence. Includes a private local SSD catalog and edit-plan checks. |
+| [colorgrade](skills/colorgrade/SKILL.md) | Resolve color management, shot matching, reference looks, existing-grade preservation, LUT integrity, and export diagnostics. |
 | [reflect](skills/reflect/SKILL.md) | Reviews outcomes and efficiency, shows findings before asking for feedback, and proposes improvements for approval. Works with completed, incomplete, and unsuccessful sessions. |
 | [rsi](skills/rsi/SKILL.md) | Tests changes to agent skills, instructions, tools, and working processes against the current version, with bounded runs and evidence for keeping or rejecting each change. |
 | [video-edit](skills/video-edit/SKILL.md) | Edits talking-head videos, reels, demos, and screen recordings. Covers audio recovery, take selection, supporting visuals, Resolve revisions, captions, and final-export checks. |
@@ -23,6 +27,10 @@ final timeline: an edit with animated shots is video-edit's, and animated-video 
 shots to its brief; an animated film is animated-video's, even with one camera insert.
 asset-library is shared by both.
 
+For Roger's personal videos, rojeru-format supplies the format and video-edit owns
+the editable timeline. Colorgrade handles dedicated grading. The rojeru B-roll catalog
+finds original SSD footage; asset-library records assets actually used in projects.
+
 Every one works alone. Without asset-library, video-edit and animated-video keep a manifest
 in the project instead of a shared library, and nothing else changes. Install all four to get
 reuse across projects.
@@ -32,37 +40,67 @@ reuse across projects.
 Clone the repository:
 
 ```sh
-git clone https://github.com/goodnight000/cstack.git
+git clone https://github.com/rogeru13/cstack.git
 cd cstack
+python3 scripts/sync_skills.py --apply
+python3 scripts/sync_skills.py --check
 ```
 
-Choose a skill, then link it into your agent's skills directory. Run the appropriate commands from the repository root.
+The sync helper links every `skills/*/SKILL.md` folder into `~/.agents/skills` for
+Codex and `~/.claude/skills` for Claude Code. Both point at this checkout, including
+scripts and references. It backs up conflicting entries and matching legacy Codex
+copies under `~/.local/share/cstack/backups/`; it leaves unrelated skills alone.
+The default `--check` is read-only. Start a fresh session after installing new skills.
+Do not move the checkout without rerunning the helper.
 
-```sh
-skill_name=reflect  # or rsi, video-edit, animated-video, video-script, asset-library
+These are the documented local discovery locations for
+[Codex](https://learn.chatgpt.com/docs/build-skills) and
+[Claude Code](https://code.claude.com/docs/en/skills). This installs local skills;
+cloud sessions need their own repository/plugin setup. Sharing instructions does not
+give the two agents identical tools, permissions, or editing judgment.
+
+## Use Roger's editing setup
+
+In either agent, ask:
+
+```text
+Use rojeru-format and video-edit on [project/source path]. Follow my stored format,
+use the business and avoidant references, search my SSD B-roll catalog, and deliver
+an editable Resolve project plus a checked export. Preserve the current grade.
 ```
 
-To install the video skills together, run either block below once per name in
-`video-script video-edit animated-video asset-library`, or wrap it in
-`for skill_name in video-script video-edit animated-video asset-library; do … done`.
+For dedicated color work:
 
-For Codex:
-
-```sh
-mkdir -p "$HOME/.codex/skills"
-test ! -e "$HOME/.codex/skills/$skill_name" && \
-  ln -s "$PWD/skills/$skill_name" "$HOME/.codex/skills/$skill_name"
+```text
+Use colorgrade to match this footage to my accepted reference. Verify the input
+transform, preserve my existing nodes, and check a short native export first.
 ```
 
-For Claude Code:
+The personal reference paths and evidence live in `~/.rojeru-format/profile.md`;
+the searchable footage inventory lives in `~/.rojeru-format/broll`. These are local
+data, not files distributed by this repository. Keep the SSD mounted for actual edits.
+The [colorgrade sources](skills/colorgrade/references/sources.md) explain the researched
+tools and their limits. Skills guide available tools; they do not replace Resolve,
+transcription, fonts, footage, or final visual/audio review.
 
-```sh
-mkdir -p "$HOME/.claude/skills"
-test ! -e "$HOME/.claude/skills/$skill_name" && \
-  ln -s "$PWD/skills/$skill_name" "$HOME/.claude/skills/$skill_name"
-```
+Use video-script before shooting when you need ideas or a script; video-edit and
+rojeru-format after shooting; colorgrade for a look; animated-video for a custom
+animated insert; asset-library for reuse. After an edit, use reflect to review concrete
+corrections. Use rsi when you want to compare a proposed workflow improvement against
+the current version. One agent should write the live Resolve timeline at a time.
 
-If the selected skill is already installed, compare and back up that version before replacing it. If both agents share a skills directory, install once. You can copy the folder instead of linking it; a linked installation follows changes in this checkout. Reload your agent session after installation if needed.
+## Add a skill of your own
+
+Create `skills/my-skill/SKILL.md` with YAML `name` and `description`, followed by the
+instructions. Add scripts only for repeatable operations and references for details.
+Give it a realistic failure case, run its helpers, then run the sync command again.
+Edit the repository copy once; both agents follow it. Keep private paths, media and
+project history in a local profile. The personal rojeru format is an intentional
+exception to the upstream skills' general-purpose scope.
+
+To pull upstream improvements, keep `upstream` pointed at goodnight000/cstack, fetch
+it, and merge `upstream/main` into a branch. Review changes to shared video defaults,
+run relevant checks, and retain this fork's explicit format overrides.
 
 ## Use Reflect
 
@@ -181,6 +219,22 @@ checks the reading against the app's average watch time.
 
 ## Evaluation
 
+Run the new helpers' focused checks with Python 3.9+, FFmpeg/FFprobe on PATH, and
+Pillow available for frame/layout tests (use an existing environment or an isolated
+virtual environment):
+
+```sh
+python3 scripts/test_sync_skills.py
+python3 skills/rojeru-format/scripts/test_format.py
+python3 skills/rojeru-format/scripts/test_broll_index.py
+python3 skills/colorgrade/scripts/test_color_audit.py
+```
+
+These exercise protected hook timing, captions, malformed plans, real frame extraction,
+audio-only reference rejection, source preservation, catalog resume/offline behavior,
+legacy-label boundaries, duplicates, LUT corruption, HDR refusal and shared installs.
+They do not prove listening, taste, a live Resolve integration, or a finished video.
+
 [Reflect's evaluation cases](skills/reflect/evals/evals.json) cover feedback, constructive pushback, unnecessary repeat checks, necessary investigation, findings that warrant no instruction changes, and keeping one project's output from becoming a default when it seeds a new skill.
 
 [Animated Video's evaluation cases](skills/animated-video/evals/evals.json) cover locking the format before building, treating a past film as evidence rather than a template, and making an explainer without a reference video.
@@ -221,7 +275,7 @@ dependencies. Open `icons/index.html` from a local server to browse them.
 
 Keep each skill self-contained and focused on a recurring need. Include examples or evaluation cases that expose meaningful mistakes. Keep transcripts, credentials, personal project history, and machine-specific paths out of published skills. For third-party contributions, preserve attribution and confirm license compatibility.
 
-Skills stay general; personalization lives outside the repo, in each skill's `~/.<skill>/profile.md` and the files it points to. Before changing a skill, ask whether the change would be right for a stranger making their own videos. If so, write it here generically. If it is right only for you (your audience, taste, numbers, machine or accounts), put it in your profile. When it is both, split it: the general rule here, your value and the evidence behind it in your profile. Bundle only assets whose license allows redistribution, and keep the creator's own footage, likeness and personal media out.
+Keep general-purpose skills general; personalization lives outside the repo, in each skill's `~/.<skill>/profile.md` and the files it points to. This fork's explicitly personal `rojeru-format` is the exception for Roger's editing contract, while its source media and evidence still stay local. Before changing a general skill, ask whether the change would be right for a stranger making their own videos. If so, write it here generically. If it is right only for you (your audience, taste, numbers, machine or accounts), put it in your profile. When it is both, split it: the general rule here, your value and the evidence behind it in your profile. Bundle only assets whose license allows redistribution, and keep the creator's own footage, likeness and personal media out.
 
 ## License
 

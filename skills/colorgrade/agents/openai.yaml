@@ -1,0 +1,4 @@
+interface:
+  display_name: "Colorgrade"
+  short_description: "Resolve color management, grading, and export checks"
+  default_prompt: "Use $colorgrade to grade this footage in Resolve, preserve the existing look, and verify the exported color."

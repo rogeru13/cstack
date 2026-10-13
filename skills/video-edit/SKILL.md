@@ -17,6 +17,12 @@ finished edit.
 
 ## Choose the style
 
+For Roger's rojeru videos, read [rojeru-format](../rojeru-format/SKILL.md) when
+available. Its explicit 4:3, hook, sentence-caption and B-roll rules override the
+generic styles below, including phrase captions and condensed opening type. For
+dedicated color work use [colorgrade](../colorgrade/SKILL.md) when available; preserve
+the current native grade during typography or sound revisions.
+
 Choose from the footage, the goal and any reference before planning the edit.
 The [style library](references/styles.md) lists the styles this skill can make
 (talking head, skits and meme cuts, lists, demos, explainers and more). It
