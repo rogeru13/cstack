@@ -53,3 +53,16 @@ people's identities or relationships merely from the directory or appearance.
 Treat this catalog as source discovery. When using asset-library for a finished edit,
 register the actually selected files and their provenance there; retain this catalog
 ID in the visual manifest. Avoid importing every cache file into the project library.
+
+## Selection exclusions and spacing
+
+Before selecting, read the local rejected-assets ledger named in the profile. Filter
+catalog IDs, canonical original paths/identities and known full-hash duplicates. When
+Roger rejects footage, remove it from selectable inventories and retain a rejection
+record so scans cannot reintroduce it. Preserve original media. Do not assume search
+results already enforce the ledger; verify the actual search implementation/output.
+
+Within a timeline, never reuse a source, even a different range or renamed duplicate.
+Record canonical source identity and known hash in the plan and recheck after revisions.
+Leave 2–3 seconds of visible talking head between insert end and next insert start,
+including after the opening insert. These are not gaps in dialogue or the timeline.

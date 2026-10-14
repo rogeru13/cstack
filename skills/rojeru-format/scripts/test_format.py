@@ -26,7 +26,7 @@ class PlanTests(unittest.TestCase):
             lambda p: p.update(body_start_frame=119),
             lambda p: p["dialogue"].append({"start_frame": 80, "end_frame": 90}),
             lambda p: p["broll"][0].update(end_frame=120),
-            lambda p: p["broll"].pop(2),
+            lambda p: p["broll"][1].update(start_frame=144),
         ):
             p = copy.deepcopy(self.plan); mutate(p)
             self.assertFalse(validate(p)["valid"])
@@ -34,14 +34,51 @@ class PlanTests(unittest.TestCase):
     def test_exact_caption_contract(self):
         changes = [lambda p: p.update(width=1920),
                    lambda p: p["title"].update(name="rojeru_"),
+                   lambda p: p["title"].update(font="Helvetica"),
+                   lambda p: p["title"].update(text="a fresh start"),
                    lambda p: p["captions"][0].update(color="#FFFF00"),
                    lambda p: p["captions"][1].update(font="Helvetica"),
-                   lambda p: p["captions"][1].update(lines=["Here is", "what", "happened."]),
-                   lambda p: p["captions"][1].update(lines=["what happened."]),
-                   lambda p: p["sentences"].update(s2="Here is what happened")]
+                   lambda p: p["captions"][0].update(lines=["i tried", "something new"]),
+                   lambda p: p["captions"][0].update(lines=["i tried\nsomething new"]),
+                   lambda p: p["captions"][0].update(lines=["i tried something new and found hope."]),
+                   lambda p: p["captions"][0].update(lines=["I tried something new"]),
+                   lambda p: p["captions"][1].update(lines=["found hope."]),
+                   lambda p: p["captions"][2].update(color="#FFE32D"),
+                   lambda p: p["dialogue"][0].update(volume_db=20),
+                   lambda p: p["dialogue"][1].update(start_frame=121)]
         for mutate in changes:
             p = copy.deepcopy(self.plan); mutate(p)
+            self.assertFalse(validate(p)["valid"], p)
+
+    def test_broll_identity_and_gap_edges(self):
+        for key in ("asset_id", "source_id", "source_hash"):
+            p = copy.deepcopy(self.plan)
+            p["broll"][0][key] = p["broll"][1][key] = "same-source"
             self.assertFalse(validate(p)["valid"])
+        p = copy.deepcopy(self.plan)
+        p["rejected_source_ids"] = [p["broll"][0]["source_id"]]
+        self.assertFalse(validate(p)["valid"])
+        for gap in (0, 47, 73):
+            p = copy.deepcopy(self.plan)
+            p["broll"][1]["start_frame"] = 144 + gap
+            self.assertFalse(validate(p)["valid"])
+        for gap in (48, 72):
+            p = copy.deepcopy(self.plan)
+            p["broll"][1]["start_frame"] = 144 + gap
+            self.assertTrue(validate(p)["valid"])
+        # No forced insert at the end of a video.
+        p = copy.deepcopy(self.plan); p["broll"].pop()
+        self.assertTrue(validate(p)["valid"])
+
+    def test_case_and_chunk_coverage(self):
+        p = copy.deepcopy(self.plan)
+        p["sentences"]["s1"] = "Jesus gave me hope and found hope."
+        p["captions"][0]["lines"] = ["Jesus gave me hope"]
+        self.assertTrue(validate(p)["valid"])
+        # Full-sentence cue is allowed when it fits six words on one line.
+        self.assertEqual(len(p["captions"][2]["lines"]), 1)
+        p["captions"][1]["lines"] = ["and lost hope."]
+        self.assertFalse(validate(p)["valid"])
 
     def test_malformed_input_returns_errors(self):
         for p in (None, {}, [], {**self.plan, "fps": "0"}, {**self.plan, "title": []}, {**self.plan, "captions": [42]}):

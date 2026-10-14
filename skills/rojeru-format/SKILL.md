@@ -1,99 +1,85 @@
 ---
 name: rojeru-format
 description: >-
-  Edit Roger's videos in the rojeru format in DaVinci Resolve: cleaned speech, centered
-  yellow first-sentence captions, a two-second title pause over B-roll, bottom sentence
-  captions, Inter/Helvetica typography, B-roll every three seconds, and a 4:3 canvas.
-  Use when asked for rojeru, rojeru_, Roger's usual editing format, or to learn/update
-  that format from his reference videos.
+  Edit Roger's personal videos in DaVinci Resolve with cleaned speech, a 4:3 canvas,
+  one-line captions of at most six words, yellow centered hook captions, an Inter
+  title pause, and unique B-roll separated by talking-head coverage. Use for rojeru,
+  rojeru_, Roger's usual editing format, or updates from his reference videos.
 ---
 
 # Rojeru format
 
-This is Roger's personal editing contract, defined directly by him. Read
-[the exact format](references/format.md) before editing. It overrides generic
-video-edit defaults for framing, captions, pacing, and B-roll. Do not infer different
-defaults from older experiments or replace this format with a generic social reel.
-
-Read `~/.rojeru-format/profile.md`: source folders, accepted references, local B-roll
-catalog, tools and current refinements. Keep source files, contact sheets, filenames
-revealing private projects, and personal reference records outside this public skill.
-The reusable format itself belongs here; the current user brief overrides it.
+Roger's current direct instructions override older references. Before editing, read
+[the exact contract](references/format.md) and `~/.rojeru-format/profile.md`.
+These are the entry points for both creative preferences and local tool lessons.
+Keep private media paths, titles, project values, catalogs and evidence in that profile
+or project notes, not this public skill.
 
 ## Route the work
 
-- **Make/revise a video:** use video-edit for source recovery, transcription, Resolve
-  assembly and export. Apply this skill's format and [edit plan](references/edit-plan.md).
-- **Learn a reference:** use [reference analysis](references/reference-analysis.md).
-  Extract evidence; don't silently change the user's explicit format.
-- **Find B-roll:** use the profile's local catalog and [B-roll workflow](references/broll.md).
-  Query before searching arbitrary directories or downloading stock.
-- **Grade:** use colorgrade when available, preserving the current native grade and
-  source/working/output transform. With no grade change requested, maintain the accepted look.
+- Editing: use video-edit for source recovery, transcription and native Resolve work,
+  with this format and [edit plan](references/edit-plan.md).
+- References: use [reference analysis](references/reference-analysis.md). A sampled
+  older export does not replace today's caption or pacing instructions.
+- B-roll: use the profile's local index and [B-roll workflow](references/broll.md).
+- Grading: use colorgrade only when needed. Text or timing revisions preserve the
+  accepted grade, working/output transforms, crop and framing.
 
-These companion skills are in this fork's sibling directories. Read only the relevant
-ones. If unavailable, perform this contract through available tools and name any missing
-capability; never claim a native editable result from a flattened movie.
+## Edit in Resolve
 
-## Build the speech and hook
+Work in the accepted native timeline. Inspect the active project/timeline before
+mutating it. Keep Resolve open; never quit, restart or close the user's timeline to
+recover scripting access. A native Workspace > Scripts Utility Lua script is a
+working fallback when the console is inaccessible. Inspect supported API methods first.
 
-Recover the latest accepted native timeline and brief first. Transcribe once and select
-complete, fluent takes. Remove accidental repeated sentences, restarts, stutters, long
-gaps, and dead space. Preserve meaning, complete consonants, natural breaths, and the
-speaker's delivery. Examine both sides of every join; a transcript can hide a repetition.
+Trim speech using audio evidence, including both edges of every retained clip.
+Remove silent handles, restarts and accidental repetitions without clipping consonants
+or breaths needed for delivery. Ripple linked picture/audio to close unintended gaps.
+Set dialogue clip Volume to +10 dB absolute, never add another 10 dB on every pass.
+Preserve the two-second intentional title pause; music may continue through it.
 
-Mark the end of the first complete spoken sentence in timeline frames. It anchors the
-hook transition, title, two-second intentional pause, and resumed body speech. This pause
-is protected from silence trimming. Cut picture to B-roll at the first sentence's end;
-show a centered Helvetica title with **rojeru** beneath in smaller Inter; hold two seconds
-without speech. Resume speech over that same B-roll before changing the shot. Music may
-continue through the pause when the brief includes it. In the supplied references,
-the title/name remain on the opening B-roll after speech resumes; use that hold through
-the opening insert unless the current brief specifies another exit. Keep body captions
-separate and readable beneath it.
+Use 4:3 and retain the existing resolution/FPS. For the requested fill, use Resolve's
+Scale full frame with crop; do not add unintended transform zoom. Preserve deliberate
+existing reframing. Use integer frames and rational FPS for all layers.
 
-## Captions and coverage
+The first complete spoken sentence determines the hook end. Its captions are centered
+Inter #FFE32D, split into speech-timed phrases of at most six words on exactly one line.
+Then cut to one B-roll insert and hold a centered Inter title during the two-second
+speech pause. Title ends in a period; smaller `rojeru` is centered directly beneath,
+with visible clearance below descending letters. Resume speech over that same insert.
+Default to clearing title/name with the opening insert unless instructed otherwise.
+Body captions are white Inter at the bottom, one line and at most six words. Preserve
+all spoken words across cues. Use lowercase including sentence starts and `i`, except
+sacred names such as God, Jesus, Christ, Lord and Holy Spirit when used as divine names.
+Font size, exact coordinates and weight remain project choices. Check phone readability.
 
-Caption the first sentence in centered Inter, exactly **#FFE32D**. Then use bottom Inter
-captions, complete sentences with punctuation, no more than two displayed lines, with
-each new sentence starting a fresh cue. Helvetica is for titles, labels and deliberate
-graphic emphasis; it does not replace the Inter sentence-caption layer.
+Leave 2–3 seconds of visible talking-head footage between the end of one B-roll insert
+and the next start, including the opening. This is continuous dialogue with camera
+coverage, never an empty timeline gap. Never reuse a B-roll source in one timeline,
+even with different in/out points or renamed/hash-identical copies. Filter rejected
+footage before selection and after rescans; rejection affects indexes, not originals.
 
-Lay out text using the actual font and output width, not a character count. If a complete
-sentence will not fit two readable lines, flag it before rendering. Rebreak the lines or
-adjust within the project's readable type-size range; do not silently omit words, shrink
-to illegibility, or split it into phrase captions. A clause-by-clause exception or rewritten
-spoken delivery needs a user decision. Preserve checked sentence data and an SRT sidecar.
+## Caption implementation and verification
 
-Plan a relevant B-roll change every three seconds in the body, plus the protected hook
-insert. Use genuine footage from the local catalog, checked against the sentence and
-available source duration. Log source in/out, visible timeline interval, relevance,
-crop and catalog ID. Avoid fabricating facts about people shown in illustrative footage.
-Do not stretch a short clip, invent footage, or repeat an unrelated shot merely to hit
-the cadence; find a suitable shot or report the specific coverage gap.
+Use native transparent titles, keeping all picture/audio independently editable.
+Do not place camera-source carrier clips above the original edit. In-place text/layout
+updates are preferable to rebuilding an accepted timeline. Before applying a batch,
+check a representative native title's output and saved composition. If a title fails,
+disable the failing layer immediately to reveal the accepted picture.
 
-## Resolve assembly and proof
+Run the [plan validator](references/edit-plan.md) for mechanical layout/pacing errors.
+Compare protected picture/audio timing and properties before/after caption-only edits.
+Check rendered viewer text, grade/framing and title/name clearance at final display size.
+Confirm changes survive save and re-selection through Resolve's API/UI without restarting.
+A successful SetInput/SaveProject proves a data operation, not visible typography.
+If screenshots are stale or playback is unavailable, report that limit rather than
+claiming visual or listening verification. A valid manifest is intent, not proof.
 
-Build in **4:3**, retaining the established resolution and FPS. For a new project with no
-other resolution specified, 1440×1080 is a supported local starting point; the ratio is
-the rule, not a mandatory pixel size. Keep camera, B-roll, captions, title/name, dialogue,
-music and SFX independently editable. Use Text+/native text for editable typography;
-PNG captions are rendered layers, not editable text. Protect camera grades from title,
-caption, or audio-only rebuilds.
+## Delivery boundary
 
-Keep a small [edit-plan manifest](references/edit-plan.md) and validate it before rendering:
-
-```sh
-python3 SKILL_DIR/scripts/validate_plan.py edit-plan.json --inter-font /path/to/Inter.otf
-```
-
-The validator checks timing and layout contracts, not fluency, relevance, or taste.
-Inspect the actual exported hook, title pause, resumed speech/B-roll overlap, every cut,
-the longest captions, and the ending. Check consecutive frames around transitions and
-listen when supported. Verify 4:3 geometry, exact output version, full decode, color and
-audio separately. Record which checks actually ran and any accepted exception.
-
-Deliver the current export, native editable project, caption sidecar, brief change list,
-and unresolved issues. Keep the user's footage, music, paid LUTs and local evidence out
-of the public fork. Improve the format from explicit corrections and accepted examples;
-use Reflect/RSI for a requested workflow review or bounded comparison.
+Save the native project and caption sidecars. Do not export/render videos, including
+review copies, until Roger explicitly asks. Changing export settings or saving a preset
+is not permission to render. Inspect authorized settings and queued jobs separately:
+existing queue jobs may retain old settings. Verify or create a fresh job when requested.
+Phone/Instagram compatibility remains unconfirmed until tested; a saved preset alone
+does not establish it. Check exports only when an export has been authorized.

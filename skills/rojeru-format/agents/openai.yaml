@@ -1,4 +1,4 @@
 interface:
   display_name: "Rojeru Format"
   short_description: "Roger's 4:3 Resolve format, captions, hook, and B-roll"
-  default_prompt: "Use $rojeru-format to edit this video with my yellow hook, title pause, sentence captions, and three-second B-roll cadence."
+  default_prompt: "Use $rojeru-format to edit this video with my yellow hook, title pause, one-line captions of at most six words, and 2–3 seconds of talking head between unique B-roll inserts."

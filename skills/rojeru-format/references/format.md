@@ -1,53 +1,42 @@
 # Exact rojeru format
 
-Source of authority: Roger's direct instructions, 2026-10-13. Display name confirmed
-as **rojeru**, without an underscore. Earlier sampled exports are evidence of particular
-edits, not authority to replace these rules.
+Authority: Roger's direct corrections through 2026-10-14. Display name is **rojeru**.
+Current requests override this contract; older sampled exports do not override it.
+Read the local profile for references, rejected assets and project-specific settings.
 
 | Element | Contract |
 | --- | --- |
-| Speech | Remove accidental repeated sentences, stutters, silence and dead space. Preserve complete delivery and meaning. |
-| Canvas | 4:3. Do not switch to 9:16 because the destination is a social platform. |
-| First spoken sentence | Inter captions, centered on screen, color **#FFE32D**. |
-| Hook exit | After that sentence, cut picture to B-roll and retain two seconds with no speech. |
-| Title pause | Title centered in Helvetica; **rojeru** below in smaller Inter. |
-| Speech return | Resume narration while the same B-roll is still playing. |
-| Body captions | Inter, bottom position, full sentences with punctuation. Each sentence begins a fresh cue; never more than two displayed lines. |
-| Other typography | Helvetica for titles, labels, graphic emphasis. |
-| Body picture | Add/change relevant B-roll every three seconds. |
+| Speech | Trim silence at both clip edges, repetitions and stutters while preserving complete speech. Close unintended linked timeline gaps. |
+| Dialogue volume | Inspector Volume +10.0 dB absolute, not cumulative. |
+| Canvas | 4:3, existing resolution/timebase; Scale full frame with crop without accidental additional zoom. Preserve accepted reframing. |
+| All text | Lowercase, including sentence starts and `i`, except sacred names such as God and Jesus. |
+| Hook captions | Centered Inter #FFE32D; one line, at most six words per speech-timed cue. |
+| Hook exit | Cut to one B-roll insert after the first complete sentence; retain two seconds without dialogue. |
+| Title | Centered Inter, ends in a period; smaller Inter `rojeru` directly below with no descender overlap. |
+| Speech return | Resume narration over the same opening B-roll; default to holding title/name until that insert ends. |
+| Body captions | White Inter at bottom; one line, at most six words; preserve all words across cues. |
+| B-roll spacing | 2–3 seconds of visible talking head between consecutive inserts, including after the opening. Continuous dialogue, no empty gaps. |
+| B-roll identity | Never repeat a source within one timeline; renamed copies, different ranges and hash-identical media count as repeats. Exclude rejected assets. |
+| Revisions | Preserve grade, crop, scaling, audio and existing cuts unless specifically requested. Native transparent titles only. |
+| Delivery | Keep Resolve open. Save natively. No video renders/exports until explicitly requested. |
 
-## Priority and unresolved choices
+## Timing and layout
 
-The two-second hook pause is intentional storytelling and overrides the general removal
-of silence. Three-second B-roll cadence does not move the first cut earlier than the
-first sentence's end. Keep the first insert through the pause and into resumed speech.
+Let `H` be the exclusive first-sentence end and `P` two seconds rounded once to rational
+FPS. Body begins at `H + P`. Before `H`, split the hook into short centered yellow cues.
+`[H,H+P)` has B-roll/title and no dialogue. At `H+P`, white bottom captions and speech
+resume over that same insert. The first insert must extend beyond the narration return.
+After it ends, show the talking head for 2–3 seconds before the next insert. Measure
+spacing end-to-start, never start-to-start. Ending talking-head footage need not be
+shortened merely to force another insert. Retiming must ripple dependent layers together.
 
-A sentence cue may occupy one or two lines. Never show a previous sentence's tail beside
-the start of the next sentence. A full sentence too long for two readable lines is an
-explicit layout exception to resolve; this skill does not silently change to word chunks.
+One sentence may span multiple cues. Preserve its words, order and punctuation across
+those cues. Split further if a six-word cue would wrap; never make a second line.
+Lowercase display is a deliberate style, so transcription may retain original casing.
+Sacred-name capitalization is contextual; do not capitalize an ordinary use of a word
+like `spirit` just because it also occurs in a religious name.
 
-The user did not set universal font sizes/weights, body-caption color, title color,
-music tracks/levels, transition effects, playback-speed multipliers, or a color LUT.
-Measure those from the selected accepted reference or preserve the current project.
-Treat any fallback as a project choice, not a new permanent default. Keep captions clear
-of important faces and subjects while honoring the requested center/bottom placement.
-
-## Hook timeline
-
-Let `H` be the exclusive end frame of the first spoken sentence and `P` be two seconds
-rounded once to the timeline timebase. The body begins at `H + P`.
-
-- Before `H`: first-sentence centered yellow Inter captions over the opening picture.
-- `[H, H+P)`: B-roll plays, title/name centered, no dialogue.
-- At `H+P`: body speech and bottom sentence captions begin. The supplied references
-  hold the title/name over this return; default to clearing them with the opening insert.
-- After `H+P`: the first B-roll continues visibly before the next shot. Do not cut back
-  to the speaker on the exact narration-return frame.
-
-Count the three-second body cadence from the narration return, then between B-roll
-starts. The protected opening insert may span the two-second pause plus up to three
-seconds of resumed narration. Do not shorten it to satisfy a cadence measured across
-the intentional pause. A project can use a shorter hold while keeping visible overlap.
-
-Use integer timeline frames and rational FPS. Do not independently round every layer
-from floating-point seconds. Retiming must ripple picture, text, title and audio together.
+No universal exact font size, weight, title/name gap, bottom coordinate, music, LUT,
+transition or speed is established. Preserve accepted project values or use the chosen
+reference. Inspect actual displayed glyphs, safe margins and descender clearance.
+The intentional title pause is the exception to speech-gap removal.
