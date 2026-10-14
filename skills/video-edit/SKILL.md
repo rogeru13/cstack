@@ -146,6 +146,11 @@ then source windows and waveform/frame evidence. Whole-clip ASR merges restarts 
 a take: run `scripts/restart_scan.py AUDIO CUTLIST.json` before the first render. A clean transcript of one take cannot prove the next take does not repeat it. Listening is preferred when
 available; do not claim it occurred if only ASR and frames were inspected.
 
+Before captioning, scan the assembled dialogue for remaining pauses, including
+clip edges. Review flagged gaps against the waveform and speech, then remove
+unwanted gaps with linked picture/audio cuts. Preserve quiet syllables and
+explicitly requested pauses. Repeat this check on the exported audio.
+
 Complete when every required beat has a selected non-rejected take and the
 opening, joins, gaze, and ending have been checked. Keep the normal-speed cutlist
 as the timing authority; treat playback speed as a separate setting.
