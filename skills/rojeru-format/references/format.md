@@ -32,6 +32,13 @@ shortened merely to force another insert. Retiming must ripple dependent layers 
 
 One sentence may span multiple cues. Preserve its words, order and punctuation across
 those cues. Split further if a six-word cue would wrap; never make a second line.
+Six words is a maximum, not a desired cue length. Review adjacent cues together for
+visual weight, actual font width, reading time and natural phrasing. Redistribute words
+from a crowded cue into a lighter neighbor when that improves the sequence. Do not
+force equal word counts or awkward grammatical breaks. Retiming must follow the newly
+chosen spoken phrase boundary, not the old caption cut. A word-count/width validator
+cannot establish good editorial grouping.
+
 Lowercase display is a deliberate style, so transcription may retain original casing.
 Sacred-name capitalization is contextual; do not capitalize an ordinary use of a word
 like `spirit` just because it also occurs in a religious name.

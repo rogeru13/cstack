@@ -52,6 +52,12 @@ Body captions are white Inter at the bottom, one line and at most six words. Pre
 all spoken words across cues. Use lowercase including sentence starts and `i`, except
 sacred names such as God, Jesus, Christ, Lord and Holy Spirit when used as divine names.
 Font size, exact coordinates and weight remain project choices. Check phone readability.
+Six words is a ceiling, not a target. Balance visible width and reading effort across
+neighboring cues; a five-word phrase can still be too heavy. Before splitting a dense
+cue again, inspect whether its leading words fit naturally in the preceding shorter
+cue. Move the boundary to the new phrase onset using speech evidence, preserving all
+words and the one-line limit. Read neighboring captions from the timeline or saved
+transcript yourself rather than asking Roger to repeat information already available.
 
 Leave 2–3 seconds of visible talking-head footage between the end of one B-roll insert
 and the next start, including the opening. This is continuous dialogue with camera
